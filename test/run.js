@@ -1,5 +1,5 @@
 import { ESLint } from 'eslint';
-import polygontech from '../index.js';
+import nextClean from '../index.js';
 
 const CLEAN_FILES = [
   'src/app/(shop)/orders/page.tsx',
@@ -20,7 +20,7 @@ const CLEAN_FILES = [
 
 const BROKEN_FILES = {
   'src/app/(shop)/products/_components/ProductList.tsx': ['no-restricted-imports'],
-  'src/app/(shop)/products/random.ts': ['polygontech/no-unknown-files'],
+  'src/app/(shop)/products/random.ts': ['next-clean/no-unknown-files'],
   'src/lib/format.ts': ['boundaries/dependencies'],
   'src/components/MyWidgets/Badge.tsx': ['check-file/folder-naming-convention'],
   'src/components/layout/orderCard.tsx': [
@@ -62,7 +62,7 @@ process.chdir(new URL('./app', import.meta.url).pathname);
 
 const eslint = new ESLint({
   overrideConfigFile: true,
-  overrideConfig: polygontech({ level: 'strict', fileCase: 'pascal', tailwindEntry: 'src/app/globals.css', typeChecked: true }),
+  overrideConfig: nextClean({ level: 'strict', fileCase: 'pascal', tailwindEntry: 'src/app/globals.css', typeChecked: true }),
 });
 
 const lint = async (file) => {

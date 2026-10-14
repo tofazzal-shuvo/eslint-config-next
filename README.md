@@ -1,4 +1,4 @@
-# @polygontech/eslint-config-next
+# eslint-config-next-clean
 
 One ESLint preset for **any Next.js (App Router) + TypeScript + Tailwind project**. It enforces one folder structure and one code style, so nobody can add files in random places, mutate state, or leave unreadable code behind.
 
@@ -9,15 +9,15 @@ Every rule below says **why** it exists and shows **bad → good**. When a rule 
 ## Install
 
 ```bash
-npm i -D @polygontech/eslint-config-next eslint typescript
+npm i -D eslint-config-next-clean eslint typescript
 ```
 
 ```js
 // eslint.config.mjs
-import polygontech from '@polygontech/eslint-config-next';
+import nextClean from 'eslint-config-next-clean';
 
-export default polygontech({ tailwindEntry: 'src/app/globals.css' });
-// or: polygontech({ level: 'strict', tailwindEntry: 'src/app/globals.css' })
+export default nextClean({ tailwindEntry: 'src/app/globals.css' });
+// or: nextClean({ level: 'strict', tailwindEntry: 'src/app/globals.css' })
 ```
 
 ## Options

@@ -71,7 +71,7 @@ const POLICIES = [
 ];
 
 export const structureConfig = (root) => ({
-  plugins: { boundaries, polygontech: structurePlugin },
+  plugins: { boundaries, 'next-clean': structurePlugin },
   settings: {
     'boundaries/elements': elementsFor(root),
     'boundaries/files': filesFor(root),
@@ -81,7 +81,7 @@ export const structureConfig = (root) => ({
   },
   rules: {
     'boundaries/dependencies': ['error', { default: 'disallow', message: DEPENDENCY_MESSAGE, policies: POLICIES }],
-    'polygontech/no-unknown-files': 'error',
+    'next-clean/no-unknown-files': 'error',
   },
 });
 

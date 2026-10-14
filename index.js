@@ -111,7 +111,7 @@ const testConfig = {
   },
 };
 
-export default function polygontech({
+export default function nextClean({
   level = 'recommended',
   srcDir = 'src',
   fileCase = 'any',
