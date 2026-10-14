@@ -1,5 +1,5 @@
 import { ESLint } from 'eslint';
-import tofazzal from '../index.js';
+import polygontech from '../index.js';
 
 const CLEAN_FILES = [
   'src/app/(shop)/orders/page.tsx',
@@ -20,7 +20,7 @@ const CLEAN_FILES = [
 
 const BROKEN_FILES = {
   'src/app/(shop)/products/_components/ProductList.tsx': ['no-restricted-imports'],
-  'src/app/(shop)/products/random.ts': ['boundaries/no-unknown-files'],
+  'src/app/(shop)/products/random.ts': ['polygontech/no-unknown-files'],
   'src/lib/format.ts': ['boundaries/dependencies'],
   'src/components/MyWidgets/Badge.tsx': ['check-file/folder-naming-convention'],
   'src/components/layout/orderCard.tsx': [
@@ -53,6 +53,7 @@ const EXPECTED_MESSAGES = {
   'src/lib/payments.ts': ["import 'server-only'"],
   'src/components/layout/ClientBadge.tsx': ['cannot import server code', 'only read NEXT_PUBLIC_'],
   'src/components/layout/index.ts': ['re-export (barrel)'],
+  'src/app/(shop)/products/random.ts': ['outside the folder structure'],
 };
 
 const FUNCTIONAL_MESSAGES = ['Use const', 'instead of a loop', 'in place', 'Do not delete', 'Classes'];
@@ -61,7 +62,7 @@ process.chdir(new URL('./app', import.meta.url).pathname);
 
 const eslint = new ESLint({
   overrideConfigFile: true,
-  overrideConfig: tofazzal({ level: 'strict', fileCase: 'pascal', tailwindEntry: 'src/app/globals.css', typeChecked: true }),
+  overrideConfig: polygontech({ level: 'strict', fileCase: 'pascal', tailwindEntry: 'src/app/globals.css', typeChecked: true }),
 });
 
 const lint = async (file) => {

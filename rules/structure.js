@@ -34,6 +34,20 @@ const DEPENDENCY_MESSAGE =
   'A feature never imports another feature, and nothing imports a page or layout. ' +
   'Move the shared part down to lib/, hooks/ or components/.';
 
+const UNKNOWN_FILE_MESSAGE =
+  'This file is outside the folder structure. In app/, use a route file (page, layout, route…) or a _folder ' +
+  '(_components, _hooks, _utils…). Elsewhere, use components/, hooks/, lib/, types/, stores/ or features/<name>/.';
+
+const withMessage = (rule, message) => ({
+  meta: rule.meta,
+  create: (context) =>
+    rule.create(Object.create(context, { report: { value: ({ node }) => context.report({ node, message }) } })),
+});
+
+const structurePlugin = {
+  rules: { 'no-unknown-files': withMessage(boundaries.rules['no-unknown-files'], UNKNOWN_FILE_MESSAGE) },
+};
+
 const toTypes = (types) => ({ to: { element: { types: { anyOf: types } } } });
 const toFiles = (categories) => ({ to: { file: { categories: { anyOf: categories } } } });
 
@@ -57,7 +71,7 @@ const POLICIES = [
 ];
 
 export const structureConfig = (root) => ({
-  plugins: { boundaries },
+  plugins: { boundaries, polygontech: structurePlugin },
   settings: {
     'boundaries/elements': elementsFor(root),
     'boundaries/files': filesFor(root),
@@ -67,7 +81,7 @@ export const structureConfig = (root) => ({
   },
   rules: {
     'boundaries/dependencies': ['error', { default: 'disallow', message: DEPENDENCY_MESSAGE, policies: POLICIES }],
-    'boundaries/no-unknown-files': 'error',
+    'polygontech/no-unknown-files': 'error',
   },
 });
 
