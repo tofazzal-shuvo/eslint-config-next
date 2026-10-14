@@ -9,8 +9,12 @@ Every rule below says **why** it exists and shows **bad → good**. When a rule 
 ## Install
 
 ```bash
-npm i -D eslint-config-next-clean eslint typescript
+npm i -D -E eslint-config-next-clean eslint typescript
 ```
+
+`-E` pins the exact version. A lint config can add new errors in any release, so upgrade on purpose, not by accident.
+
+Also turn on `"noFallthroughCasesInSwitch": true` in `tsconfig.json`. This config leaves `switch` fall-through to TypeScript, which knows that `redirect()` and `notFound()` never return.
 
 ```js
 // eslint.config.mjs
@@ -83,7 +87,8 @@ src/
   types/ or types.ts          types used by 2+ routes
   middleware.ts, env.ts…      root files
   pages/                      Pages Router files, if you still have them
-  tests/, e2e/, testing/      test code, ignored by the structure rules
+  test/, tests/, e2e/, testing/  test code, ignored by the structure rules
+public/                       static files, not linted
 ```
 
 **Who may import whom:**
@@ -191,6 +196,8 @@ When values never change after they're created, you can read any line without tr
 | canonical classes | One way to write the same thing. | `px-2 py-2` → `p-2` |
 | consistent class order | Easier to scan and to diff. Auto-fixable. | — |
 | no concatenated classes | `'bg-' + color` can't be found by Tailwind and is never generated. | `` `bg-${color}` `` → a map `{ red: 'bg-red-500' }[color]` |
+
+**Safe with `cn()`:** `cn()` uses tailwind-merge, where class order decides which conflicting class wins. Sorting `'leading-none text-base'` would change the result, and so would renaming `text-[15px]` to a custom `text-sm-plus` that tailwind-merge doesn't know. Before applying an order, rename, deprecation or duplicate fix, this config runs your project's tailwind-merge on the string before and after. If the result changes, it reports the problem **without auto-fixing** and names the class that has no effect.
 
 ## 7. TypeScript — let the compiler catch bugs
 

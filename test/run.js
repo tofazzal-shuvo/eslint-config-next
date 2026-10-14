@@ -17,6 +17,8 @@ const CLEAN_FILES = [
   'src/providers/ThemeProvider.tsx',
   'src/lib/db.ts',
   'src/app/(shop)/orders/page-config.ts',
+  'src/test/serverOnly.ts',
+  'src/lib/redirectFor.ts',
 ];
 
 const BROKEN_FILES = {
@@ -57,6 +59,12 @@ const EXPECTED_MESSAGES = {
   'src/app/(shop)/products/random.ts': ['outside the folder structure'],
 };
 
+const MERGE_CASES = [
+  { line: 3, rule: 'better-tailwindcss/enforce-consistent-class-order', isFixed: false },
+  { line: 5, rule: 'better-tailwindcss/enforce-canonical-classes', isFixed: false },
+  { line: 7, rule: 'better-tailwindcss/enforce-canonical-classes', isFixed: true },
+];
+
 const FUNCTIONAL_MESSAGES = ['Use const', 'instead of a loop', 'in place', 'Do not delete', 'Classes'];
 
 process.chdir(new URL('./app', import.meta.url).pathname);
@@ -96,15 +104,30 @@ const checkMessages = async ([file, expected]) => {
   return missing.length === 0 ? [] : [`${file} missing messages: ${missing.join(', ')}\n${texts}`];
 };
 
+const checkMergeCases = async () => {
+  const messages = await lint('src/components/layout/MergeCases.tsx');
+  const isMatch = ({ line, rule, isFixed }) =>
+    messages.some((message) => message.line === line && message.ruleId === rule && Boolean(message.fix) === isFixed);
+  const missing = MERGE_CASES.filter((expected) => !isMatch(expected));
+  return missing.length === 0 ? [] : [`MergeCases.tsx: ${JSON.stringify(missing)}\n${messages.map(describe).join('\n')}`];
+};
+
+const checkPublicIgnored = async () => {
+  const [result] = await eslint.lintFiles(['public/audio/pcm-capture.js']).catch(() => [{ messages: [] }]);
+  return result.messages.some(({ ruleId }) => ruleId) ? ['public/ should be ignored'] : [];
+};
+
 const failures = (
   await Promise.all([
     ...CLEAN_FILES.map(checkClean),
     ...Object.entries(BROKEN_FILES).map(checkBroken),
     ...Object.entries(EXPECTED_MESSAGES).map(checkMessages),
     checkFunctionalMessages(),
+    checkMergeCases(),
+    checkPublicIgnored(),
   ])
 ).flat();
 
-const total = CLEAN_FILES.length + Object.keys(BROKEN_FILES).length + Object.keys(EXPECTED_MESSAGES).length;
+const total = CLEAN_FILES.length + Object.keys(BROKEN_FILES).length + Object.keys(EXPECTED_MESSAGES).length + 2;
 console.info(failures.length === 0 ? `OK: ${total} files behave as expected` : failures.join('\n\n'));
 process.exit(failures.length === 0 ? 0 : 1);

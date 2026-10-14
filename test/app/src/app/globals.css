@@ -1,1 +1,5 @@
 @import "tailwindcss";
+
+@theme {
+  --text-sm-plus: 15px;
+}

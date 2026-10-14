@@ -1,4 +1,7 @@
 import tailwind from 'eslint-plugin-better-tailwindcss';
+import { withMergeSafeFixes } from './tailwindMerge.js';
+
+const tailwindPlugin = withMergeSafeFixes(tailwind);
 
 const ARBITRARY_VALUE = {
   pattern: '^(.*\\[.+\\])$',
@@ -6,7 +9,7 @@ const ARBITRARY_VALUE = {
 };
 
 export const tailwindConfig = ({ tailwindEntry, ignoreClasses = [] }) => ({
-  plugins: { 'better-tailwindcss': tailwind },
+  plugins: { 'better-tailwindcss': tailwindPlugin },
   settings: { 'better-tailwindcss': tailwindEntry ? { entryPoint: tailwindEntry } : {} },
   rules: {
     'better-tailwindcss/no-conflicting-classes': 'error',
