@@ -30,6 +30,7 @@ All optional.
 | `tailwindEntry` | — | Your Tailwind CSS file. Needed on Tailwind v4 to catch unknown classes |
 | `ignoreClasses` | `[]` | Regex list of your own CSS classes, so they are not reported as unknown: `['^date-field-picker$']` |
 | `srcDir` | `'src'` | Use `'.'` if `app/` sits at the project root |
+| `routeFiles` | `[]` | Your own files that belong next to `page.tsx`, besides Next.js's: `['page-config']` allows `app/**/page-config.ts` |
 | `fileCase` | `'any'` | `'any'` accepts `OrderTable.tsx` or `order-table.tsx`. `'pascal'` or `'kebab'` enforces one |
 | `typeChecked` | `false` | Adds rules that need type info: boolean names, exhaustive `switch`, unawaited promises. Slower |
 | `bannedImports` | `[]` | Imports your project replaced: `[{ name: 'moment', message: 'Use date-fns.' }]` |

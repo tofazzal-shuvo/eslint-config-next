@@ -1,7 +1,27 @@
 import boundaries from 'eslint-plugin-boundaries';
 
-export const ROUTE_FILES =
-  '{page,layout,template,loading,error,global-error,not-found,forbidden,unauthorized,default,route,opengraph-image,twitter-image,icon,apple-icon,sitemap,robots,manifest}';
+const NEXT_ROUTE_FILES = [
+  'page',
+  'layout',
+  'template',
+  'loading',
+  'error',
+  'global-error',
+  'not-found',
+  'forbidden',
+  'unauthorized',
+  'default',
+  'route',
+  'opengraph-image',
+  'twitter-image',
+  'icon',
+  'apple-icon',
+  'sitemap',
+  'robots',
+  'manifest',
+];
+
+export const routeFilesGlob = (extraRouteFiles = []) => `{${[...NEXT_ROUTE_FILES, ...extraRouteFiles].join(',')}}`;
 
 const elementsFor = (root) => [
   { type: 'ui', pattern: `${root}components/ui`, partialMatch: false },
@@ -17,9 +37,9 @@ const elementsFor = (root) => [
   { type: 'feature', pattern: `${root}features/*`, partialMatch: false, capture: ['feature'] },
 ];
 
-const filesFor = (root) => [
-  { category: 'route', pattern: `${root}app/**/${ROUTE_FILES}.{ts,tsx}`, capture: ['route', 'file'] },
-  { category: 'route', pattern: `${root}app/${ROUTE_FILES}.{ts,tsx}`, capture: ['file'] },
+const filesFor = (root, routeFiles) => [
+  { category: 'route', pattern: `${root}app/**/${routeFiles}.{ts,tsx}`, capture: ['route', 'file'] },
+  { category: 'route', pattern: `${root}app/${routeFiles}.{ts,tsx}`, capture: ['file'] },
   { category: 'private', pattern: `${root}app/**/_*/**/*`, capture: ['route', 'folder', 'path', 'file'] },
   { category: 'private', pattern: `${root}app/**/_*`, capture: ['route', 'file'] },
   { category: 'private', pattern: `${root}app/_*/**/*`, capture: ['folder', 'path', 'file'] },
@@ -70,11 +90,11 @@ const POLICIES = [
   { from: { file: { categories: 'root' } }, allow: [toTypes(['lib', 'type']), toFiles(['type'])] },
 ];
 
-export const structureConfig = (root) => ({
+export const structureConfig = (root, routeFiles) => ({
   plugins: { boundaries, 'next-clean': structurePlugin },
   settings: {
     'boundaries/elements': elementsFor(root),
-    'boundaries/files': filesFor(root),
+    'boundaries/files': filesFor(root, routeFiles),
     'boundaries/include': [`${root}**/*`],
     'boundaries/ignore': ['**/*.{test,spec}.{ts,tsx}', '**/*.d.ts', `${root}{tests,e2e,__tests__,testing}/**`, '**/__tests__/**'],
     'import/resolver': { typescript: { alwaysTryTypes: true } },

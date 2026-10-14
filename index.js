@@ -9,7 +9,7 @@ import { classNameTemplateBan, rawElementBans, restrictedImportPaths } from './r
 import { namingRules, strictNamingRules, booleanNamingRules } from './rules/naming.js';
 import { typescriptRules, strictTypescriptRules, typeCheckedRules } from './rules/typescript.js';
 import { hygieneRules } from './rules/hygiene.js';
-import { structureConfig, SIBLING_PRIVATE_IMPORT, ROUTE_FILES } from './rules/structure.js';
+import { structureConfig, SIBLING_PRIVATE_IMPORT, routeFilesGlob } from './rules/structure.js';
 import { reExportBan, clientBoundaryBans, secretEnvBan } from './rules/modules.js';
 import { fileNameConfig } from './rules/fileNames.js';
 import { nextConfig } from './rules/nextjs.js';
@@ -72,7 +72,7 @@ const serverCodeFiles = (root) => [
   `${root}app/**/_*.{ts,tsx}`,
 ];
 
-const entryFiles = (root) => [`${root}app/**/${ROUTE_FILES}.{ts,tsx}`, `${root}app/${ROUTE_FILES}.{ts,tsx}`, `${root}*.{ts,tsx}`];
+const entryFiles = (root, routeFiles) => [`${root}app/**/${routeFiles}.{ts,tsx}`, `${root}app/${routeFiles}.{ts,tsx}`, `${root}*.{ts,tsx}`];
 
 const serverCodeConfig = ({ root, serverBans }) => ({
   files: serverCodeFiles(root),
@@ -84,8 +84,8 @@ const uiKitConfig = ({ root, serverBans }) => ({
   rules: { 'no-restricted-syntax': syntaxRule(serverBans.filter(isNot('raw-element'))), 'func-style': 'off' },
 });
 
-const entryConfig = ({ root, syntaxBans }) => ({
-  files: entryFiles(root),
+const entryConfig = ({ root, routeFiles, syntaxBans }) => ({
+  files: entryFiles(root, routeFiles),
   rules: { 'no-restricted-syntax': syntaxRule(syntaxBans.filter(isNot('re-export'))) },
 });
 
@@ -115,6 +115,7 @@ export default function nextClean({
   level = 'recommended',
   srcDir = 'src',
   fileCase = 'any',
+  routeFiles: extraRouteFiles = [],
   tailwindEntry,
   ignoreClasses,
   bannedImports,
@@ -124,6 +125,7 @@ export default function nextClean({
   rules = {},
 } = {}) {
   const root = srcDir === '.' ? '' : `${srcDir.replace(/\/$/, '')}/`;
+  const routeFiles = routeFilesGlob(extraRouteFiles);
   const chosen = LEVELS[level];
   const syntaxBans = chosen.syntaxBans.filter(isAllowed(allowSyntax));
   const serverBans = [...syntaxBans, secretEnvBan].filter(isAllowed(allowSyntax));
@@ -138,9 +140,9 @@ export default function nextClean({
     codeConfig({ level: chosen, syntaxBans, bannedImports }),
     serverCodeConfig({ root, serverBans }),
     uiKitConfig({ root, serverBans }),
-    entryConfig({ root, syntaxBans }),
+    entryConfig({ root, routeFiles, syntaxBans }),
     appConfig({ root, bannedImports }),
-    { files: SOURCE_FILES, ...structureConfig(root) },
+    { files: SOURCE_FILES, ...structureConfig(root, routeFiles) },
     { files: SOURCE_FILES, ...fileNameConfig({ root, fileCase }) },
     { files: COMPONENT_FILES, ...tailwindConfig({ tailwindEntry, ignoreClasses }) },
     ...(typeChecked ? [typeCheckedConfig] : []),

@@ -16,6 +16,7 @@ const CLEAN_FILES = [
   'src/stores/cartStore.ts',
   'src/providers/ThemeProvider.tsx',
   'src/lib/db.ts',
+  'src/app/(shop)/orders/page-config.ts',
 ];
 
 const BROKEN_FILES = {
@@ -62,7 +63,7 @@ process.chdir(new URL('./app', import.meta.url).pathname);
 
 const eslint = new ESLint({
   overrideConfigFile: true,
-  overrideConfig: nextClean({ level: 'strict', fileCase: 'pascal', tailwindEntry: 'src/app/globals.css', typeChecked: true }),
+  overrideConfig: nextClean({ level: 'strict', routeFiles: ['page-config'], fileCase: 'pascal', tailwindEntry: 'src/app/globals.css', typeChecked: true }),
 });
 
 const lint = async (file) => {

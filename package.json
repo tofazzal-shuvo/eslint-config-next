@@ -1,6 +1,6 @@
 {
   "name": "eslint-config-next-clean",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Neutral ESLint preset for Next.js + TypeScript + Tailwind: enforces one folder structure, functional style, clear names and Tailwind hygiene so garbage code cannot land.",
   "type": "module",
   "main": "./index.js",
