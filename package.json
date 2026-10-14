@@ -1,5 +1,5 @@
 {
-  "name": "@tofazzal/eslint-config",
+  "name": "@polygontech/eslint-config-next",
   "version": "0.1.0",
   "description": "Neutral ESLint preset for Next.js + TypeScript + Tailwind: enforces one folder structure, functional style, clear names and Tailwind hygiene so garbage code cannot land.",
   "type": "module",
@@ -30,11 +30,11 @@
   "author": "Md Tofazzal Haque",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/tofazzal-verbex/eslint-config.git"
+    "url": "git+https://github.com/tofazzal-shuvo/eslint-config-next.git"
   },
-  "homepage": "https://github.com/tofazzal-verbex/eslint-config#readme",
+  "homepage": "https://github.com/tofazzal-shuvo/eslint-config-next#readme",
   "bugs": {
-    "url": "https://github.com/tofazzal-verbex/eslint-config/issues"
+    "url": "https://github.com/tofazzal-shuvo/eslint-config-next/issues"
   },
   "peerDependencies": {
     "eslint": "^9.0.0 || ^10.0.0",

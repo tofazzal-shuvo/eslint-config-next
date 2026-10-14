@@ -111,7 +111,7 @@ const testConfig = {
   },
 };
 
-export default function tofazzal({
+export default function polygontech({
   level = 'recommended',
   srcDir = 'src',
   fileCase = 'any',
