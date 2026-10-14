@@ -18,8 +18,8 @@ import { tailwindConfig, strictTailwindRules } from './rules/tailwind.js';
 const SOURCE_FILES = ['**/*.{js,jsx,mjs,cjs,ts,tsx}'];
 const TYPESCRIPT_FILES = ['**/*.{ts,tsx}'];
 const COMPONENT_FILES = ['**/*.{jsx,tsx}'];
-const TEST_FILES = ['**/*.{test,spec}.{js,jsx,ts,tsx}', '**/{tests,e2e,__tests__,testing}/**'];
-const DEFAULT_IGNORES = ['**/node_modules/**', '**/dist/**', '**/build/**', '**/.next/**', '**/coverage/**', '**/next-env.d.ts'];
+const TEST_FILES = ['**/*.{test,spec}.{js,jsx,ts,tsx}', '**/{test,tests,e2e,__tests__,testing}/**'];
+const DEFAULT_IGNORES = ['**/node_modules/**', '**/dist/**', '**/build/**', '**/.next/**', '**/coverage/**', '**/next-env.d.ts', 'public/**'];
 
 const LEVELS = {
   recommended: {
@@ -94,6 +94,11 @@ const appConfig = ({ root, bannedImports }) => ({
   rules: { 'no-restricted-imports': importRule(bannedImports, [SIBLING_PRIVATE_IMPORT]) },
 });
 
+const typescriptOnlyConfig = {
+  files: TYPESCRIPT_FILES,
+  rules: { 'no-fallthrough': 'off' },
+};
+
 const typeCheckedConfig = {
   files: TYPESCRIPT_FILES,
   languageOptions: { parserOptions: { projectService: true } },
@@ -138,6 +143,7 @@ export default function nextClean({
     nextConfig,
     prettier,
     codeConfig({ level: chosen, syntaxBans, bannedImports }),
+    typescriptOnlyConfig,
     serverCodeConfig({ root, serverBans }),
     uiKitConfig({ root, serverBans }),
     entryConfig({ root, routeFiles, syntaxBans }),

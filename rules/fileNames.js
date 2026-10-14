@@ -18,7 +18,7 @@ const GRAB_BAG_NAMES = '{helpers,helper,misc,common,stuff,general,shared}';
 
 const folderRules = (root) => ({
   [`${root}app/**/`]: 'NEXT_JS_APP_ROUTER_CASE',
-  [`${root}{components,hooks,lib,types,utils,config,features,stores,providers,assets,testing}/**/`]: 'KEBAB_CASE',
+  [`${root}{components,hooks,lib,types,utils,config,features,stores,providers,assets,test,testing}/**/`]: 'KEBAB_CASE',
 });
 
 const fileRules = (root, names) => ({

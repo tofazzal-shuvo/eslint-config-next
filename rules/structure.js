@@ -96,7 +96,7 @@ export const structureConfig = (root, routeFiles) => ({
     'boundaries/elements': elementsFor(root),
     'boundaries/files': filesFor(root, routeFiles),
     'boundaries/include': [`${root}**/*`],
-    'boundaries/ignore': ['**/*.{test,spec}.{ts,tsx}', '**/*.d.ts', `${root}{tests,e2e,__tests__,testing}/**`, '**/__tests__/**'],
+    'boundaries/ignore': ['**/*.{test,spec}.{ts,tsx}', '**/*.d.ts', `${root}{test,tests,e2e,__tests__,testing}/**`, '**/__tests__/**'],
     'import/resolver': { typescript: { alwaysTryTypes: true } },
   },
   rules: {
