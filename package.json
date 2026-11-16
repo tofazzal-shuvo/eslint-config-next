@@ -1,6 +1,6 @@
 {
   "name": "eslint-config-next-clean",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Neutral ESLint preset for Next.js + TypeScript + Tailwind: enforces one folder structure, functional style, clear names and Tailwind hygiene so garbage code cannot land.",
   "type": "module",
   "main": "./index.js",
@@ -10,6 +10,7 @@
   "files": [
     "index.js",
     "rules",
+    "agents",
     "LICENSE"
   ],
   "scripts": {
@@ -24,7 +25,13 @@
     "tailwind",
     "folder-structure",
     "architecture",
-    "functional"
+    "functional",
+    "ai-agent",
+    "ai-coding",
+    "claude-code",
+    "cursor",
+    "copilot",
+    "agents-md"
   ],
   "license": "MIT",
   "author": "Md Tofazzal Haque",
