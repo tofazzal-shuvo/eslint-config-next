@@ -226,9 +226,30 @@ When values never change after they're created, you can read any line without tr
 | `react-hooks` recommended | Hooks in the wrong order or with missing dependencies cause bugs that are hard to reproduce. | — |
 | Prettier | Formatting is Prettier's job, so ESLint formatting rules are off. | — |
 
+## For AI coding agents
+
+An agent writes cleaner code when it knows the rules before it starts, not after lint fails. The package ships two files for that.
+
+**Any agent (Claude Code, Cursor, Copilot, Codex…)** — copy the rules into your project's agent file:
+
+```bash
+cat node_modules/eslint-config-next-clean/agents/AGENTS.md >> AGENTS.md
+```
+
+Claude Code reads `CLAUDE.md`, so use that file name there.
+
+**Claude Code skill** — the longer guide, loaded only when the agent writes frontend code:
+
+```bash
+mkdir -p .claude/skills
+cp -r node_modules/eslint-config-next-clean/agents/skills/frontend-clean-code .claude/skills/
+```
+
+Both tell the agent to run ESLint on the files it changed and fix every error before it says it is done.
+
 ## What ESLint can't check
 
-A reviewer (or the matching Claude Code skill) still needs to check these:
+A reviewer (or the Claude Code skill in `agents/skills/`) still needs to check these:
 
 - **Is the name clear?** ESLint catches `data`, but not a name that is technically true and still confusing.
 - **Is this logic already written somewhere?** Search before writing a helper.
